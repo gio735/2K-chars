@@ -20,6 +20,10 @@ namespace ConsoleApp1
             bool isntRepeated = DoesntRepeat(password);
             if (validLength && doesntContainSpace && containsCap && containsLower && containsint && isntRepeated)
             {
+                return true;
+            }
+            else
+            {
                 if (!validLength)
                 {
                     Console.WriteLine("Invalid length (must be more than 7 and less than 24 character");
@@ -44,10 +48,6 @@ namespace ConsoleApp1
                 {
                     Console.WriteLine("Password must not repeat same character more than twice in row");
                 }
-                return true;
-            }
-            else
-            {
                 return false;
             }
         }
