@@ -7,19 +7,20 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             string password = Console.ReadLine();
-
+            Console.WriteLine(ValidatePassword(password));
         }
 
         public static bool ValidatePassword(string password)
         {
             bool validLength = password.Length > 6 && password.Length < 24;
-            bool doesntContainSpace = !password.Contains(' ');
+            bool doesntContainNonSupportedChar = NotContainUnsupportedSpec(password);
             bool containsCap = ContainsCapital(password);
             bool containsLower = ContainsLowerCase(password);
             bool containsint = ContainsNumber(password);
             bool isntRepeated = DoesntRepeat(password);
-            if (validLength && doesntContainSpace && containsCap && containsLower && containsint && isntRepeated)
+            if (validLength && doesntContainNonSupportedChar && containsCap && containsLower && containsint && isntRepeated)
             {
+                
                 return true;
             }
             else
@@ -28,9 +29,9 @@ namespace ConsoleApp1
                 {
                     Console.WriteLine("Invalid length (must be more than 7 and less than 24 character");
                 }
-                if (!doesntContainSpace)
+                if (!doesntContainNonSupportedChar)
                 {
-                    Console.WriteLine("Password must not contain space within");
+                    Console.WriteLine("Your password contains special character which is not supported.\n Supported special characters: '!', '@', '#', '$', '^', '&', '*', '(', ')', '+', '=', '-', '_', '{', '}', '[', ']', ':', ';', '\'', '\"', '?', '<', '>', ',', '.' ");
                 }
                 if (!containsCap)
                 {
@@ -108,7 +109,32 @@ namespace ConsoleApp1
                 }
             }
             return true;
-
+        }
+        private static bool NotContainUnsupportedSpec(string target)
+        {
+            char[] supportedSpecs = { '!', '@', '#', '$', '^', '&', '*', '(', ')', '+', '=', '-', '_', '{', '}', '[', ']', ':', ';', '\'', '\"', '?', '<', '>', ',', '.' };
+            char[] charPass = target.ToCharArray();
+            foreach (char character in charPass)
+            {
+                
+                if (char.IsSymbol(character))
+                {
+                    bool end = false;
+                    foreach (char specie in supportedSpecs)
+                    {
+                        if (specie == character)
+                        {
+                            end = true;
+                            break;
+                        }
+                    }
+                    if (end == false)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }
